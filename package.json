@@ -1,0 +1,31 @@
+{
+  "name": "doz-prerender",
+  "version": "0.0.0",
+  "description": "Prerendering for Doz",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dozjs/doz-prerender.git"
+  },
+  "keywords": [
+    "doz",
+    "prerender",
+    "static",
+    "file"
+  ],
+  "author": "Fabio Ricali",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dozjs/doz-prerender/issues"
+  },
+  "homepage": "https://github.com/dozjs/doz-prerender#readme",
+  "dependencies": {
+    "doz-ssr": "^1.0.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
+}
