@@ -57,7 +57,7 @@ class DozPrerender {
         this.processed.push(route);
 
         // Render
-        await this.ssr.render(route);
+        let content = await this.ssr.render(route);
 
         // Retrieve all links
         const links = this.getLinks();
@@ -76,17 +76,15 @@ class DozPrerender {
             }
         }
 
-        let content = this.ssr.getContent();
-
         // here manipulate DOM
 
         // Create local DOM from rendered content
         const localDom = new JSDOM(content);
+        const _document = localDom.window.document;
 
         // Retrieve all element with href o src attribute
-        const nodesUrl = localDom.window.document.querySelectorAll('[href], [src]');
+        const nodesUrl = _document.querySelectorAll('[href], [src]');
 
-        //
         for (let i = 0; i < nodesUrl.length; i++) {
             const el = nodesUrl[i];
 
@@ -94,18 +92,26 @@ class DozPrerender {
                 el.href = normalizeUrl(`${this.opt.publicUrl}/${el.href}`);
             } else if (el.src && isLocalUrl(el.src)) {
 
-                await fs.copy(`${this.entryDir}${el.src}`, `${this.opt.outputDir}/${path.basename(el.src)}`);
+                await fs.copy(
+                    `${this.entryDir}${el.src}`,
+                    `${this.opt.outputDir}/${path.basename(el.src)}`
+                );
 
-                //console.log('OLD', (`${this.entryDir}${el.src}`));
-                //console.log('NEW', normalizeUrl(`${this.opt.publicUrl}/${path.basename(el.src)}`));
                 el.src = normalizeUrl(`${this.opt.publicUrl}/${path.basename(el.src)}`);
             }
         }
 
-        content = `${this.opt.docTypeString}${localDom.window.document.documentElement.outerHTML}`;
+        const bundleEl = _document.getElementById(this.opt.bundleId);
+
+        if (bundleEl) {
+            const js = _document.createElement('script');
+            js.innerHTML = 'window.__DOZ_PRERENDER__ = true';
+            bundleEl.parentNode.insertBefore(js, bundleEl);
+        }
+
+        content = `${this.opt.docTypeString}${_document.documentElement.outerHTML}`;
 
         await this.write(route, content);
-
 
     }
 
