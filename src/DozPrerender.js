@@ -8,6 +8,7 @@ const {JSDOM} = jsdom;
 const slash = require('super-trailing-slash');
 const util = require('util');
 const clearDir = util.promisify(require('empty-dir'));
+const PUBLIC_URL = '__DOZ_PRERENDER_PUBLIC_URL__';
 
 function isLocalUrl(href) {
     const hrefPart = Url.parse(href);
@@ -25,7 +26,7 @@ class DozPrerender {
             linkSelector: 'a[href]',
             indexFile: 'index.html',
             outputDir: 'dist',
-            publicUrl: '/',
+            publicURL: '/',
             routerAttribute: 'router-link',
             clearDir: false
         }, opt);
@@ -33,9 +34,10 @@ class DozPrerender {
         this.entryDir = Path.parse(entryFile).dir + '/';
 
         this.opt.outputDir = slash.add(this.opt.outputDir);
-        this.opt.publicUrl = slash.add(this.opt.publicUrl);
+        this.opt.publicURL = slash.add(this.opt.publicURL);
 
-        this.processed = [];
+        this.processedRoutes = [];
+        this.processedRes = [];
         this.ssr = new DozSSR(entryFile, opt);
 
     }
@@ -70,6 +72,8 @@ class DozPrerender {
         await this.run(route);
         console.log('[END] pre-rendering');
 
+        console.log(this.processedRoutes);
+        console.log(this.processedRes);
         setImmediate(() => {
             process.exit(0);
         });
@@ -77,9 +81,9 @@ class DozPrerender {
 
     async run(route = '/') {
 
-        if (this.processed.includes(route)) return;
+        if (this.processedRoutes.includes(route)) return;
 
-        this.processed.push(route);
+        this.processedRoutes.push(route);
 
         console.log('[processing]', route);
 
@@ -99,7 +103,7 @@ class DozPrerender {
             href = link.href;
 
             // Added only if is relative url
-            if (isLocalUrl(href) && !this.processed.includes(href)) {
+            if (isLocalUrl(href) && !this.processedRoutes.includes(href)) {
                 await this.run(href);
             }
         }
@@ -122,7 +126,7 @@ class DozPrerender {
 
         if (bundleEl) {
             const js = _document.createElement('script');
-            js.innerHTML = 'window.__DOZ_PRERENDER__ = true';
+            js.innerHTML = `window.${PUBLIC_URL} = '${this.opt.publicURL}'`;
             bundleEl.parentNode.insertBefore(js, bundleEl);
         }
 
@@ -140,22 +144,27 @@ class DozPrerender {
     }
 
     async detectRes(el) {
-        if (el.href && isLocalUrl(el.href) && !this.processed.includes(el.href)) {
+        if (el.nodeName === 'A' && el.href && isLocalUrl(el.href)) {
+            el.href = this.setNewSrc(el.href);
+        } else if (el.nodeName !== 'A' && el.href && isLocalUrl(el.href)) {
             await this.processRes(el, 'href');
-        } else if (el.src && isLocalUrl(el.src) && !this.processed.includes(el.href)) {
+        } else if (el.src && isLocalUrl(el.src)) {
             await this.processRes(el, 'src');
         }
     }
 
     async processRes(el, attr) {
-        this.processed.push(el[attr]);
         const basename = Path.basename(el[attr]);
-        await this.copyRes(el.src, basename);
+        if (!this.processedRes.includes(el[attr])) {
+            await this.copyRes(el[attr], basename);
+            this.processedRes.push(el[attr]);
+        }
         el[attr] = this.setNewSrc(basename);
     }
 
     setNewSrc(basename) {
-        return normalizeUrl(`${this.opt.publicUrl}${basename}`);
+        const newPath = `${this.opt.publicURL}${basename}`;
+        return normalizeUrl(newPath);
     }
 
     getLinks() {

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test",
-    "test-ssr-serve": "parcel serve test/SSR/client/index.html --out-dir test/SSR/public/",
+    "test-ssr-serve": "parcel serve test/SSR/client/index.html --no-cache --out-dir test/SSR/public/",
     "test-ssr-watch": "parcel watch test/SSR/client/index.html --no-cache --out-dir test/SSR/public/ --public-url ./",
     "test-ssr-build": "parcel build test/SSR/client/index.html --no-cache --out-dir test/SSR/public/ --public-url ./"
   },

@@ -1,6 +1,8 @@
 import Doz from 'doz'
-import 'doz-router'
+import router from './router'
 import imagePhoneUrl from './iphone.png'
+
+Doz.component('doz-router', router);
 
 Doz.component('home-page', {
     template() {
@@ -155,7 +157,7 @@ Doz.component('navigate-buttons', {
                 </div>
             `
     },
-    $router(path){
+    $router(path) {
         this.getComponentById('router').$navigate(path);
     }
 });
