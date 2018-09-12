@@ -1,16 +1,16 @@
 const DozPrerender = require('../../');
 
 const prerender = new DozPrerender('../SSR/public/index.html', {
-    publicUrl: 'http://localhost:63342/doz-prerender/test/SSR/dist/'
+    publicUrl: 'http://localhost:63342/doz-prerender/test/SSR/dist/',
+    clearDir: true
 });
 
 console.log('--START--');
 
 prerender
-    .run()
+    .exec()
     .then(() => {
         console.log('--END--');
-        process.exit(0);
     })
     .catch(e => {
         console.log(e);
