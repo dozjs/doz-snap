@@ -3,9 +3,11 @@ const Url = require('url');
 const Path = require('path');
 const fs = require('fs-extra');
 const normalizeUrl = require('normalize-url');
-const jsdom = require("jsdom");
+const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-const slash = require("super-trailing-slash");
+const slash = require('super-trailing-slash');
+const util = require('util');
+const clearDir = util.promisify(require('empty-dir'));
 
 function isLocalUrl(href) {
     const hrefPart = Url.parse(href);
@@ -24,7 +26,8 @@ class DozPrerender {
             indexFile: 'index.html',
             outputDir: 'dist',
             publicUrl: '/',
-            routerAttribute: 'router-link'
+            routerAttribute: 'router-link',
+            clearDir: false
         }, opt);
 
         this.entryDir = Path.parse(entryFile).dir + '/';
@@ -92,9 +95,7 @@ class DozPrerender {
 
         for (let i = 0; i < nodesUrl.length; i++) {
             const el = nodesUrl[i];
-
-            await this.saveStaticRes(el);
-
+            await this.detectRes(el);
         }
 
         const bundleEl = _document.getElementById(this.opt.bundleId);
@@ -118,23 +119,19 @@ class DozPrerender {
         );
     }
 
-    async saveStaticRes(el) {
-        let basename;
-
+    async detectRes(el) {
         if (el.href && isLocalUrl(el.href) && !this.processed.includes(el.href)) {
-
-            this.processed.push(el.href);
-            basename = Path.basename(el.href);
-            await this.copyRes(el.href, basename);
-            el.href = this.setNewSrc(basename);
-
+            await this.processRes(el, 'href');
         } else if (el.src && isLocalUrl(el.src) && !this.processed.includes(el.href)) {
-
-            this.processed.push(el.src);
-            basename = Path.basename(el.src);
-            await this.copyRes(el.src, basename);
-            el.src = this.setNewSrc(basename);
+            await this.processRes(el, 'src');
         }
+    }
+
+    async processRes(el, attr) {
+        this.processed.push(el[attr]);
+        const basename = Path.basename(el[attr]);
+        await this.copyRes(el.src, basename);
+        el[attr] = this.setNewSrc(basename);
     }
 
     setNewSrc(basename) {
