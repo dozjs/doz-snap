@@ -38,10 +38,6 @@ class DozPrerender {
         this.processed = [];
         this.ssr = new DozSSR(entryFile, opt);
 
-        /*(async ()=> {
-            await clearDir(this.opt.outputDir);
-        })()*/
-
     }
 
     async write(route, content) {
@@ -62,13 +58,13 @@ class DozPrerender {
 
         await fs.outputFile(finalPath, content);
 
-        console.log('done', route);
+        console.log('[done]', route);
     }
 
     async exec(route = '/') {
-        console.log('[START] Doz pre-rendering...');
+        console.log('[START] pre-rendering...');
         if (this.opt.clearDir) {
-            console.log('cleanup...');
+            console.log('[cleanup...]');
             await clearDir(this.opt.outputDir);
         }
         await this.run(route);
@@ -85,7 +81,7 @@ class DozPrerender {
 
         this.processed.push(route);
 
-        console.log('processing', route);
+        console.log('[processing]', route);
 
         // Render
         let content = await this.ssr.render(route);

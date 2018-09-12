@@ -1,5 +1,6 @@
 import Doz from 'doz'
 import 'doz-router'
+import imagePhoneUrl from './iphone.png'
 
 Doz.component('home-page', {
     template() {
@@ -18,7 +19,7 @@ Doz.component('home-page', {
 Doz.component('about-page', {
     template() {
         return `
-                <div>I'm about page</div>
+                <div>I'm about page <img src="${imagePhoneUrl}"></div>
             `
     },
     onCreate() {
@@ -74,7 +75,7 @@ Doz.component('profile-page', {
 Doz.component('user-details-page', {
     template() {
         return `
-                <div>I'm user page with id "${this.props.id}", <a href="javascript:history.back()">back</a></div>
+                <div>I'm user page with id "${this.props.id}", <a href="javascript:history.back()">back</a>  <img src="${imagePhoneUrl}"> </div>
             `
     },
     onCreate() {
