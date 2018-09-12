@@ -1,13 +1,14 @@
 const DozSSR = require('doz-ssr');
-const url = require('url');
-const path = require('path');
+const Url = require('url');
+const Path = require('path');
 const fs = require('fs-extra');
 const normalizeUrl = require('normalize-url');
 const jsdom = require("jsdom");
 const {JSDOM} = jsdom;
+const slash = require("super-trailing-slash");
 
 function isLocalUrl(href) {
-    const hrefPart = url.parse(href);
+    const hrefPart = Url.parse(href);
     return hrefPart.protocol == null
 }
 
@@ -26,7 +27,11 @@ class DozPrerender {
             routerAttribute: 'router-link'
         }, opt);
 
-        this.entryDir = path.parse(entryFile).dir;
+        this.entryDir = Path.parse(entryFile).dir + '/';
+
+        this.opt.outputDir = slash.add(this.opt.outputDir);
+        this.opt.publicUrl = slash.add(this.opt.publicUrl);
+
         this.processed = [];
         this.ssr = new DozSSR(entryFile, opt);
     }
@@ -35,9 +40,9 @@ class DozPrerender {
 
         let finalPath;
 
-        const routePart = url.parse(route);
+        const routePart = Url.parse(route);
         const routePathName = routePart.pathname;
-        const routePathPart = path.parse(routePathName);
+        const routePathPart = Path.parse(routePathName);
 
         if (!routePathPart.ext) {
             finalPath = `${routePathName}/${this.opt.indexFile}`;
@@ -45,7 +50,7 @@ class DozPrerender {
             finalPath = routePathName;
         }
 
-        finalPath = path.normalize(this.opt.outputDir + '/' + finalPath);
+        finalPath = Path.normalize(this.opt.outputDir + '/' + finalPath);
 
         await fs.outputFile(finalPath, content);
     }
@@ -88,17 +93,8 @@ class DozPrerender {
         for (let i = 0; i < nodesUrl.length; i++) {
             const el = nodesUrl[i];
 
-            if (el.href && isLocalUrl(el.href)) {
-                el.href = normalizeUrl(`${this.opt.publicUrl}/${el.href}`);
-            } else if (el.src && isLocalUrl(el.src)) {
+            await this.saveStaticRes(el);
 
-                await fs.copy(
-                    `${this.entryDir}${el.src}`,
-                    `${this.opt.outputDir}/${path.basename(el.src)}`
-                );
-
-                el.src = normalizeUrl(`${this.opt.publicUrl}/${path.basename(el.src)}`);
-            }
         }
 
         const bundleEl = _document.getElementById(this.opt.bundleId);
@@ -113,6 +109,34 @@ class DozPrerender {
 
         await this.write(route, content);
 
+    }
+
+    async copyRes(src, basename) {
+        return fs.copy(
+            `${this.entryDir}${src}`,
+            `${this.opt.outputDir}${basename}`
+        );
+    }
+
+    async saveStaticRes(el) {
+        let basename;
+
+        if (el.href && isLocalUrl(el.href)) {
+
+            basename = Path.basename(el.href);
+            await this.copyRes(el.href, basename);
+            el.href = this.setNewSrc(basename);
+
+        } else if (el.src && isLocalUrl(el.src)) {
+
+            basename = Path.basename(el.src);
+            await this.copyRes(el.src, basename);
+            el.src = this.setNewSrc(basename);
+        }
+    }
+
+    setNewSrc(basename) {
+        return normalizeUrl(`${this.opt.publicUrl}${basename}`);
     }
 
     getLinks() {

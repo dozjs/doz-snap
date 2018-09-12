@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha test",
-    "test-ssr-watch": "parcel watch test/SSR/client/app.js --out-file bundle --no-cache --out-dir test/SSR/public/dist --public-url ./",
-    "test-ssr-build": "parcel build test/SSR/client/app.js --out-file bundle --no-cache --out-dir test/SSR/public/dist --public-url ./"
+    "test-ssr-serve": "parcel serve test/SSR/client/index.html --out-dir test/SSR/public/",
+    "test-ssr-watch": "parcel watch test/SSR/client/index.html --no-cache --out-dir test/SSR/public/ --public-url ./",
+    "test-ssr-build": "parcel build test/SSR/client/index.html --no-cache --out-dir test/SSR/public/ --public-url ./"
   },
   "repository": {
     "type": "git",
@@ -28,7 +29,8 @@
     "doz-ssr": "^1.0.0",
     "fs-extra": "^7.0.0",
     "jsdom": "^12.0.0",
-    "normalize-url": "^3.3.0"
+    "normalize-url": "^3.3.0",
+    "super-trailing-slash": "^1.0.2"
   },
   "devDependencies": {
     "doz": "^1.5.0",
