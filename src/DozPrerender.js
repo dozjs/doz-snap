@@ -121,14 +121,16 @@ class DozPrerender {
     async saveStaticRes(el) {
         let basename;
 
-        if (el.href && isLocalUrl(el.href)) {
+        if (el.href && isLocalUrl(el.href) && !this.processed.includes(el.href)) {
 
+            this.processed.push(el.href);
             basename = Path.basename(el.href);
             await this.copyRes(el.href, basename);
             el.href = this.setNewSrc(basename);
 
-        } else if (el.src && isLocalUrl(el.src)) {
+        } else if (el.src && isLocalUrl(el.src) && !this.processed.includes(el.href)) {
 
+            this.processed.push(el.src);
             basename = Path.basename(el.src);
             await this.copyRes(el.src, basename);
             el.src = this.setNewSrc(basename);
