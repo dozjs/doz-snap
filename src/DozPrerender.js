@@ -143,13 +143,7 @@ class DozPrerender {
                         
                         if (prop) {
                             var value = el[prop];
-                            console.dir(el);
-                            aEl = document.createElement('a');
-                            aEl.href = value;
-                            console.log(aEl.protocol)
-                            if (!aEl.protocol) {
-                                el[prop] = '${this.opt.publicURL}' + el[prop];
-                            }
+                            el[prop] = value.replace(location.origin, window.${PUBLIC_URL});
                         }
                     }
                 }, 100);
