@@ -32,6 +32,10 @@ export default {
         this.$_queryRaw = '';
         this.$_link = {};
         this.$_pauseHashListener = false;
+
+        /*if (window.__DOZ_PRERENDER_PUBLIC_URL__) {
+            this.props.root = window.__DOZ_PRERENDER_PUBLIC_URL__.replace(location.origin, '');
+        }*/
     },
 
     /**
@@ -133,8 +137,11 @@ export default {
         if (this.props.mode === 'history')
             path = historyPath;
 
-
         path = window.__DOZ_SSR_PATH__ || path;
+
+        if (window.__DOZ_PRERENDER_PUBLIC_URL__) {
+            path = (location.origin + path).replace(window.__DOZ_PRERENDER_PUBLIC_URL__, '');
+        }
 
         fullPath =  path;
 
@@ -173,7 +180,6 @@ export default {
         }
 
         if (!found) {
-            console.log('NOT FOUND', path)
             this.$_currentPath = null;
             this.$_currentFullPath = null;
             this.$setView(this.$_routeNotFound || `"${path}" not found`);
@@ -256,12 +262,16 @@ export default {
             let path = el.pathname || el.href;
 
             if (this.props.mode === 'history') {
-                el.addEventListener('click', e => {
-                    e.preventDefault();
-                    let _path = path + el.search;
-                    history.pushState(_path, null, normalizePath(this.props.root + _path));
-                    this.$_navigate(_path);
-                });
+                if (window.__DOZ_PRERENDER_PUBLIC_URL__) {
+                    //el.href = this.props.root + path + el.search;
+                } else {
+                    el.addEventListener('click', e => {
+                        e.preventDefault();
+                        let _path = path + el.search;
+                        history.pushState(_path, null, normalizePath(this.props.root + _path));
+                        this.$_navigate(_path);
+                    });
+                }
             } else {
                 el.href = this.props.hash + path + el.search;
             }

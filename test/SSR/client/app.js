@@ -1,6 +1,7 @@
 import Doz from 'doz'
 import router from './router'
 import imagePhoneUrl from './iphone.png'
+import './style.css'
 
 Doz.component('doz-router', router);
 
