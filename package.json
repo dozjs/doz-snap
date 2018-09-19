@@ -34,7 +34,7 @@
     "super-trailing-slash": "^1.0.2"
   },
   "devDependencies": {
-    "doz": "^1.5.0",
+    "doz": "^1.6.1",
     "doz-router": "^1.1.1",
     "mocha": "^5.2.0",
     "parcel-bundler": "^1.9.4"
