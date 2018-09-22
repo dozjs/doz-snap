@@ -9,6 +9,8 @@ function fixUrl(obj) {
             prop = 'href';
         else if (obj.props.src)
             prop = 'src';
+        else if (obj.props.srcset)
+            prop = 'srcset';
 
         if (prop && !/^http/.test(obj.props[prop])) {
             obj.props[prop] = window[PUBLIC_URL] + obj.props[prop];

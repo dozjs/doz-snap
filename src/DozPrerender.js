@@ -42,12 +42,17 @@ class DozPrerender {
 
     }
 
+    resolvePath(route) {
+        const routePart = Url.parse(route);
+        const routePathName = routePart.pathname;
+        return Path.normalize(this.opt.outputDir + '/' + routePathName);
+    }
+
     async write(route, content) {
 
         let finalPath;
 
-        const routePart = Url.parse(route);
-        const routePathName = routePart.pathname;
+        const routePathName = this.resolvePath(route);
         const routePathPart = Path.parse(routePathName);
 
         if (!routePathPart.ext) {
@@ -55,8 +60,6 @@ class DozPrerender {
         } else {
             finalPath = routePathName;
         }
-
-        finalPath = Path.normalize(this.opt.outputDir + '/' + finalPath);
 
         await fs.outputFile(finalPath, content);
 
@@ -114,12 +117,12 @@ class DozPrerender {
         const localDom = new JSDOM(content);
         const _document = localDom.window.document;
 
-        // Retrieve all element with href o src attribute
-        const nodesUrl = _document.querySelectorAll('[href], [src]');
+        // Retrieve all element with href, src or srcset attribute
+        const nodesUrl = _document.querySelectorAll('[href], [src], [srcset]');
 
         for (let i = 0; i < nodesUrl.length; i++) {
             const el = nodesUrl[i];
-            await this.detectRes(el);
+            await this.detectRes(el, route);
         }
 
         const bundleEl = _document.getElementById(this.opt.bundleId);
@@ -143,23 +146,33 @@ class DozPrerender {
         );
     }
 
-    async detectRes(el) {
+    async detectRes(el, route) {
+        //console.error('COSA DEVO COPIARE?', el.nodeName, 'DOVE?', route, 'CHE DIVENTA', Path.dirname(this.resolvePath(route)));
+        const destinationPart = Path.parse(route);
+        console.log('destinationPart', destinationPart)
+        const destination = !destinationPart.ext && !/^\?/.test(destinationPart.base) ? destinationPart.dir + '/' +destinationPart.base : destinationPart.dir;
+        //console.log('destination', destination)
+
         if (el.nodeName === 'A' && el.href && isLocalUrl(el.href)) {
             el.href = this.setNewSrc(el.href);
         } else if (el.nodeName !== 'A' && el.href && isLocalUrl(el.href)) {
-            await this.processRes(el, 'href');
+            await this.processRes(el, 'href', destination);
         } else if (el.src && isLocalUrl(el.src)) {
-            await this.processRes(el, 'src');
+            await this.processRes(el, 'src', destination);
+        } else if (el.srcset && isLocalUrl(el.srcset)) {
+            await this.processRes(el, 'srcset', destination);
         }
     }
 
-    async processRes(el, attr) {
-        const basename = Path.basename(el[attr]);
-        if (!this.processedRes.includes(el[attr])) {
+    async processRes(el, attr, destination) {
+        const basename = destination + '\\' + Path.basename(el[attr]);
+        console.log('BASENAME', basename)
+
+        if (!this.processedRes.includes(basename)) {
             await this.copyRes(el[attr], basename);
-            this.processedRes.push(el[attr]);
+            this.processedRes.push(basename);
         }
-        el[attr] = this.setNewSrc(basename);
+        //el[attr] = this.setNewSrc(basename);
     }
 
     setNewSrc(basename) {
