@@ -1,4 +1,4 @@
-const {REGEX, PATH, NS} = require('./constants');
+const {REGEX, PATH, NS, PRERENDER, SSR} = require('./constants');
 const queryToObject = require('./query-to-object');
 const clearPath = require('./clear-path');
 const normalizePath = require('./normalize-path');
@@ -93,8 +93,8 @@ export default {
     $navigate(path, params) {
         if (this.props.mode === 'history') {
 
-            if (window.__DOZ_PRERENDER_PUBLIC_URL__) {
-                history.pushState(path, null, normalizePath(window.__DOZ_PRERENDER_PUBLIC_URL__.replace(location.origin, '') + path));
+            if (window[PRERENDER]) {
+                history.pushState(path, null, normalizePath(window[PRERENDER].replace(location.origin, '') + path));
             } else {
                 history.pushState(path, null, normalizePath(this.props.root + path));
             }
@@ -138,10 +138,10 @@ export default {
         if (this.props.mode === 'history')
             path = historyPath;
 
-        path = window.__DOZ_SSR_PATH__ || path;
+        path = window[SSR] || path;
 
-        if (window.__DOZ_PRERENDER_PUBLIC_URL__) {
-            path = (location.origin + path).replace(window.__DOZ_PRERENDER_PUBLIC_URL__, '');
+        if (window[PRERENDER]) {
+            path = (location.origin + path).replace(window[PRERENDER], '');
         }
 
         fullPath =  path;
@@ -263,7 +263,7 @@ export default {
             let path = el.pathname || el.href;
 
             if (this.props.mode === 'history') {
-                if (window.__DOZ_PRERENDER_PUBLIC_URL__) {
+                if (window[PRERENDER]) {
                     //el.href = this.props.root + path + el.search;
                 } else {
                     el.addEventListener('click', e => {
