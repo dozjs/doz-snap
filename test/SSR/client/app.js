@@ -2,6 +2,9 @@ import Doz from 'doz'
 import router from './router'
 import imagePhoneUrl from './iphone.png'
 import './style.css'
+import DozPreRenderPlugin from '../../../src/plugin'
+
+Doz.use(DozPreRenderPlugin);
 
 Doz.component('doz-router', router);
 

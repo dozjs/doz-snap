@@ -126,28 +126,7 @@ class DozPrerender {
 
         if (bundleEl) {
             const js = _document.createElement('script');
-            js.innerHTML = `
-                window.${PUBLIC_URL} = '${this.opt.publicURL}';
-                setTimeout(function(){
-                    var nodesUrl = document.querySelectorAll('a[href], [src]');
-            
-                    for (var i = 0; i < nodesUrl.length; i++) {
-                        var el = nodesUrl[i];
-                        var prop;
-                        
-                        if (el.href) {
-                            prop = 'href';
-                        } else if (el.tagName !== 'script' && el.src) {
-                            prop = 'src';
-                        }
-                        
-                        if (prop) {
-                            var value = el[prop];
-                            el[prop] = value.replace(location.origin, window.${PUBLIC_URL});
-                        }
-                    }
-                }, 100);
-            `;
+            js.innerHTML = `window.${PUBLIC_URL} = '${this.opt.publicURL}';`;
             bundleEl.parentNode.insertBefore(js, bundleEl);
         }
 
