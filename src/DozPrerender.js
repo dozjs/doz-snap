@@ -6,8 +6,7 @@ const normalizeUrl = require('normalize-url');
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const slash = require('super-trailing-slash');
-const util = require('util');
-const clearDir = util.promisify(require('empty-dir'));
+const del = require('delete');
 const PUBLIC_URL = '__DOZ_PRERENDER_PUBLIC_URL__';
 
 function isLocalUrl(href) {
@@ -71,7 +70,7 @@ class DozPrerender {
         console.log('[START] pre-rendering...');
         if (this.opt.clearDir) {
             console.log('[cleanup...]');
-            console.log('C L E A R', await clearDir(this.opt.outputDir));
+            await del.promise(this.opt.outputDir, {force: true});
         }
         await this.run(route);
         console.log('[END] pre-rendering');
