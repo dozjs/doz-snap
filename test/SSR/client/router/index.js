@@ -32,10 +32,6 @@ export default {
         this.$_queryRaw = '';
         this.$_link = {};
         this.$_pauseHashListener = false;
-
-        /*if (window.__DOZ_PRERENDER_PUBLIC_URL__) {
-            this.props.root = window.__DOZ_PRERENDER_PUBLIC_URL__.replace(location.origin, '');
-        }*/
     },
 
     /**
@@ -96,7 +92,12 @@ export default {
      */
     $navigate(path, params) {
         if (this.props.mode === 'history') {
-            history.pushState(path, null, normalizePath(this.props.root + path));
+
+            if (window.__DOZ_PRERENDER_PUBLIC_URL__) {
+                history.pushState(path, null, normalizePath(window.__DOZ_PRERENDER_PUBLIC_URL__.replace(location.origin, '') + path));
+            } else {
+                history.pushState(path, null, normalizePath(this.props.root + path));
+            }
             this.$_navigate(path, params);
         } else {
             this.$_pauseHashListener = true;

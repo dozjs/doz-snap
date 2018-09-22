@@ -28,7 +28,8 @@ class DozPrerender {
             outputDir: 'dist',
             publicURL: '/',
             routerAttribute: 'router-link',
-            clearDir: false
+            clearDir: false,
+            verbose: false
         }, opt);
 
         this.entryDir = Path.parse(entryFile).dir + '/';
@@ -70,13 +71,19 @@ class DozPrerender {
         console.log('[START] pre-rendering...');
         if (this.opt.clearDir) {
             console.log('[cleanup...]');
-            await clearDir(this.opt.outputDir);
+            console.log('C L E A R', await clearDir(this.opt.outputDir));
         }
         await this.run(route);
         console.log('[END] pre-rendering');
 
-        console.log(this.processedRoutes);
-        console.log(this.processedRes);
+        if (this.opt.verbose) {
+            console.log('[Verbose]');
+            console.log('Routes processed:');
+            console.log(this.processedRoutes);
+            console.log('Resources copied:');
+            console.log(this.processedRes);
+        }
+
         setImmediate(() => {
             process.exit(0);
         });
@@ -164,10 +171,18 @@ class DozPrerender {
     }
 
     async processRes(el, attr, destination) {
-        const basename = Path.join(destination, Path.basename(el[attr]));
-        if (!this.processedRes.includes(basename)) {
-            await this.copyRes(el[attr], basename);
-            this.processedRes.push(basename);
+        // Copy to relative folder
+        const toFolder = Path.join(destination, Path.basename(el[attr]));
+        if (!this.processedRes.includes(toFolder)) {
+            await this.copyRes(el[attr], toFolder);
+            this.processedRes.push(toFolder);
+        }
+
+        // Copy to root
+        const toRoot = Path.basename(el[attr]);
+        if (!this.processedRes.includes(toRoot)) {
+            await this.copyRes(el[attr], toRoot);
+            this.processedRes.push(el[attr]);
         }
     }
 
