@@ -45,7 +45,7 @@ class DozPrerender {
     resolvePath(route) {
         const routePart = Url.parse(route);
         const routePathName = routePart.pathname;
-        return Path.normalize(this.opt.outputDir + '/' + routePathName);
+        return Path.join(this.opt.outputDir, routePathName);
     }
 
     async write(route, content) {
@@ -56,7 +56,7 @@ class DozPrerender {
         const routePathPart = Path.parse(routePathName);
 
         if (!routePathPart.ext) {
-            finalPath = `${routePathName}/${this.opt.indexFile}`;
+            finalPath = Path.join(routePathName, this.opt.indexFile);
         } else {
             finalPath = routePathName;
         }
@@ -147,11 +147,10 @@ class DozPrerender {
     }
 
     async detectRes(el, route) {
-        //console.error('COSA DEVO COPIARE?', el.nodeName, 'DOVE?', route, 'CHE DIVENTA', Path.dirname(this.resolvePath(route)));
         const destinationPart = Path.parse(route);
-        console.log('destinationPart', destinationPart)
-        const destination = !destinationPart.ext && !/^\?/.test(destinationPart.base) ? destinationPart.dir + '/' +destinationPart.base : destinationPart.dir;
-        //console.log('destination', destination)
+        const destination = !destinationPart.ext && !/^\?/.test(destinationPart.base)
+            ? Path.join(destinationPart.dir, destinationPart.base)
+            : destinationPart.dir;
 
         if (el.nodeName === 'A' && el.href && isLocalUrl(el.href)) {
             el.href = this.setNewSrc(el.href);
@@ -165,14 +164,11 @@ class DozPrerender {
     }
 
     async processRes(el, attr, destination) {
-        const basename = destination + '\\' + Path.basename(el[attr]);
-        console.log('BASENAME', basename)
-
+        const basename = Path.join(destination, Path.basename(el[attr]));
         if (!this.processedRes.includes(basename)) {
             await this.copyRes(el[attr], basename);
             this.processedRes.push(basename);
         }
-        //el[attr] = this.setNewSrc(basename);
     }
 
     setNewSrc(basename) {
