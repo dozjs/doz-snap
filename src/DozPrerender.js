@@ -2,7 +2,6 @@ const DozSSR = require('doz-ssr');
 const Url = require('url');
 const Path = require('path');
 const fs = require('fs-extra');
-const normalizeUrl = require('normalize-url');
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
 const slash = require('super-trailing-slash');
