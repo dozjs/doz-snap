@@ -4,6 +4,7 @@ const Path = require('path');
 const fs = require('fs-extra');
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
+const normalizeUrl = require('normalize-url');
 const slash = require('super-trailing-slash');
 const del = require('delete');
 const PUBLIC_URL = '__DOZ_PRERENDER_PUBLIC_URL__';
