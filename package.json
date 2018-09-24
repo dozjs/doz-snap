@@ -35,7 +35,8 @@
   },
   "devDependencies": {
     "doz": "^1.6.1",
-    "doz-router": "^1.1.1",
+    "doz-router": "^1.2.0",
+    "metaset": "^1.0.1",
     "mocha": "^5.2.0",
     "parcel-bundler": "^1.9.4"
   }

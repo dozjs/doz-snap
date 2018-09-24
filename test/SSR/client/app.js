@@ -1,12 +1,13 @@
 import Doz from 'doz'
-import router from './router'
+import 'doz-router'
 import imagePhoneUrl from './iphone.png'
 import './style.css'
 import DozPreRenderPlugin from '../../../src/plugin'
+import meta from 'metaset'
 
 Doz.use(DozPreRenderPlugin);
 
-Doz.component('doz-router', router);
+//Doz.component('doz-router', router);
 
 Doz.component('home-page', {
     template() {
@@ -15,7 +16,8 @@ Doz.component('home-page', {
             `
     },
     onCreate() {
-        console.log(this.tag, 'created')
+        console.log(this.tag, 'created');
+        meta.setTitle('Home page');
     },
     onDestroy() {
         console.log(this.tag, 'destroyed')
@@ -29,7 +31,8 @@ Doz.component('about-page', {
             `
     },
     onCreate() {
-        console.log(this.tag, 'created')
+        console.log(this.tag, 'created');
+        meta.setTitle('About page');
     },
     onDestroy() {
         console.log(this.tag, 'destroyed')
@@ -43,7 +46,8 @@ Doz.component('extension-page', {
             `
     },
     onCreate() {
-        console.log(this.tag, 'created')
+        console.log(this.tag, 'created');
+        meta.setTitle('Extension page');
     },
     onDestroy() {
         console.log(this.tag, 'destroyed')
@@ -57,7 +61,8 @@ Doz.component('contact-page', {
             `
     },
     onCreate() {
-        console.log(this.tag, 'created')
+        console.log(this.tag, 'created');
+        meta.setTitle('Contact page');
     },
     onDestroy() {
         console.log(this.tag, 'destroyed')
@@ -71,7 +76,8 @@ Doz.component('profile-page', {
             `
     },
     onCreate() {
-        console.log(this.tag, 'created')
+        console.log(this.tag, 'created');
+        meta.setTitle('Profile page');
     },
     onDestroy() {
         console.log(this.tag, 'destroyed')
@@ -86,7 +92,8 @@ Doz.component('user-details-page', {
     },
     onCreate() {
         this.props.id = this.getComponentById('router').$_param['id'];
-        console.log(this.tag, 'created')
+        console.log(this.tag, 'created');
+        meta.setTitle('User details page');
     },
     onDestroy() {
         console.log(this.tag, 'destroyed')
@@ -101,7 +108,8 @@ Doz.component('search-page', {
     },
     onCreate() {
         this.props.query = this.getComponentById('router').$_query['t'];
-        console.log(this.tag, 'created')
+        console.log(this.tag, 'created');
+        meta.setTitle('Search page');
     },
     onDestroy() {
         console.log(this.tag, 'destroyed')
@@ -115,7 +123,8 @@ Doz.component('user-page', {
             `
     },
     onCreate() {
-        console.log(this.tag, 'created')
+        console.log(this.tag, 'created');
+        meta.setTitle('User page');
     },
     onDestroy() {
         console.log(this.tag, 'destroyed')
@@ -130,7 +139,8 @@ Doz.component('section-page', {
             `
     },
     onCreate() {
-        console.log(this.tag, 'created')
+        console.log(this.tag, 'created');
+        meta.setTitle('Section page');
     },
     onDestroy() {
         console.log(this.tag, 'destroyed')
@@ -144,7 +154,8 @@ Doz.component('not-found-page', {
             `
     },
     onCreate() {
-        console.log(this.tag, 'created')
+        console.log(this.tag, 'created');
+        meta.setTitle('Not found page');
     },
     onDestroy() {
         console.log(this.tag, 'destroyed')
