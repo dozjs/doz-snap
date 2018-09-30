@@ -3,6 +3,9 @@
   "version": "0.0.0",
   "description": "Prerendering for Doz",
   "main": "index.js",
+  "bin": {
+    "doz-prerender": "./src/cli.js"
+  },
   "scripts": {
     "test": "mocha test",
     "test-ssr-serve": "parcel serve test/SSR/client/index.html --no-cache --out-dir test/SSR/public/",
@@ -26,6 +29,7 @@
   },
   "homepage": "https://github.com/dozjs/doz-prerender#readme",
   "dependencies": {
+    "commander": "^2.18.0",
     "delete": "^1.1.0",
     "doz-ssr": "^1.0.1",
     "fs-extra": "^7.0.0",
@@ -34,7 +38,7 @@
     "super-trailing-slash": "^1.0.2"
   },
   "devDependencies": {
-    "doz": "^1.6.1",
+    "doz": "^1.6.2",
     "doz-router": "^1.2.0",
     "metaset": "^1.0.1",
     "mocha": "^5.2.0",

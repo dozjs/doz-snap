@@ -27,8 +27,8 @@ class DozPrerender {
             outputDir: 'dist',
             publicURL: '/',
             routerAttribute: 'router-link',
-            clearDir: false,
-            verbose: false
+            clearDir: true,
+            verbose: true
         }, opt);
 
         this.entryDir = Path.parse(entryFile).dir + '/';
