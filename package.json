@@ -38,8 +38,8 @@
     "super-trailing-slash": "^1.0.2"
   },
   "devDependencies": {
-    "doz": "^1.6.2",
-    "doz-router": "^1.2.0",
+    "doz": "^1.6.3",
+    "doz-router": "^1.2.1",
     "metaset": "^1.0.1",
     "mocha": "^5.2.0",
     "parcel-bundler": "^1.9.4"

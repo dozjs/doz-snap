@@ -26,7 +26,7 @@ class DozPrerender {
             indexFile: 'index.html',
             outputDir: 'dist',
             publicURL: '/',
-            routerAttribute: 'router-link',
+            routerAttribute: 'data-router-link',
             clearDir: true,
             verbose: true
         }, opt);
