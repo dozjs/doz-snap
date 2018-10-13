@@ -14,7 +14,7 @@ program
     .option('-i, --index-file', 'Index file', 'index.html')
     .option('-o, --output-dir', 'Output directory', 'snap')
     .option('-p, --public-url', 'Public url' ,'/')
-    .option('-R, --router-attribute', 'Router attribute', 'router-link')
+    .option('-R, --router-attribute', 'Router attribute', 'data-router-link')
     .option('--no-clear-dir', 'Disable clear directory before build')
     .option('--no-verbose', 'Disable verbose log')
     .parse(process.argv);
