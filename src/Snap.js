@@ -14,7 +14,7 @@ function isLocalUrl(href) {
     return hrefPart.protocol == null
 }
 
-class DozPrerender {
+class Snap {
 
     constructor(entryFile, opt = {}) {
 
@@ -24,9 +24,9 @@ class DozPrerender {
             delayRender: 0,
             linkSelector: 'a[href]',
             indexFile: 'index.html',
-            outputDir: 'dist',
+            outputDir: 'snap',
             publicURL: '/',
-            routerAttribute: 'router-link',
+            routerAttribute: 'data-router-link',
             clearDir: true,
             verbose: true
         }, opt);
@@ -196,4 +196,4 @@ class DozPrerender {
 
 }
 
-module.exports = DozPrerender;
+module.exports = Snap;

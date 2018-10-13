@@ -2,7 +2,7 @@
 
 const program = require('commander');
 const version = require('../package').version;
-const DozPrerender = require('./DozPrerender');
+const Snap = require('./Snap');
 
 program
     .version(version)
@@ -12,7 +12,7 @@ program
     .option('-d, --delay-render', 'Delay render', 0)
     .option('-s, --link-selector', 'Link selector', 'a[href]')
     .option('-i, --index-file', 'Index file', 'index.html')
-    .option('-o, --output-dir', 'Output directory', 'dist')
+    .option('-o, --output-dir', 'Output directory', 'snap')
     .option('-p, --public-url', 'Public url' ,'/')
     .option('-R, --router-attribute', 'Router attribute', 'router-link')
     .option('--no-clear-dir', 'Disable clear directory before build')
@@ -20,5 +20,5 @@ program
     .parse(process.argv);
 
 (async ()=>{
-    await new DozPrerender(program.entryFile, program);
+    await new Snap(program.entryFile, program);
 })();

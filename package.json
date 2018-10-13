@@ -1,7 +1,7 @@
 {
-  "name": "doz-prerender",
+  "name": "doz-snap",
   "version": "0.0.0",
-  "description": "Prerendering for Doz",
+  "description": "Pre-rendering for Doz",
   "main": "index.js",
   "bin": {
     "doz-prerender": "./src/cli.js"
@@ -14,20 +14,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dozjs/doz-prerender.git"
+    "url": "git+https://github.com/dozjs/doz-snap.git"
   },
   "keywords": [
     "doz",
-    "prerender",
+    "pre-render",
+    "rendering",
+    "snap",
     "static",
     "file"
   ],
   "author": "Fabio Ricali",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dozjs/doz-prerender/issues"
+    "url": "https://github.com/dozjs/doz-snap/issues"
   },
-  "homepage": "https://github.com/dozjs/doz-prerender#readme",
+  "homepage": "https://github.com/dozjs/doz-snap#readme",
   "dependencies": {
     "commander": "^2.18.0",
     "delete": "^1.1.0",
@@ -38,8 +40,8 @@
     "super-trailing-slash": "^1.0.2"
   },
   "devDependencies": {
-    "doz": "^1.6.2",
-    "doz-router": "^1.2.0",
+    "doz": "^1.6.8",
+    "doz-router": "^1.4.1",
     "metaset": "^1.0.1",
     "mocha": "^5.2.0",
     "parcel-bundler": "^1.9.4"
