@@ -1,2 +1,2 @@
-# doz-prerender
-Prendering for Doz
+# doz-snap
+Pre-ndering for Doz
