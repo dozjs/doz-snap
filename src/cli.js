@@ -6,19 +6,21 @@ const Snap = require('./Snap');
 
 program
     .version(version)
-    .option('-f, --entry-file', 'Entry file')
-    .option('-b, --bundle-id', 'Bundle script id', 'bundle')
-    .option('-D, --doc-type-string', 'Document type','<!DOCTYPE html>')
-    .option('-d, --delay-render', 'Delay render', 0)
-    .option('-s, --link-selector', 'Link selector', 'a[href]')
-    .option('-i, --index-file', 'Index file', 'index.html')
-    .option('-o, --output-dir', 'Output directory', 'snap')
-    .option('-p, --public-url', 'Public url' ,'/')
-    .option('-R, --router-attribute', 'Router attribute', 'data-router-link')
+    .option('-f, --entry-file <fileName>', 'Entry file')
+    .option('-b, --bundle-id [value]', 'Bundle script id')
+    .option('-D, --doc-type-string [value]', 'Document type')
+    .option('-d, --delay-render [value]', 'Delay render')
+    .option('-s, --link-selector [value]', 'Link selector')
+    .option('-i, --index-file [value]', 'Index file')
+    .option('-o, --output-dir [value]', 'Output directory')
+    .option('-p, --public-url [value]', 'Public url')
+    .option('-R, --router-attribute [value]', 'Router attribute')
     .option('--no-clear-dir', 'Disable clear directory before build')
     .option('--no-verbose', 'Disable verbose log')
     .parse(process.argv);
 
 (async ()=>{
-    await new Snap(program.entryFile, program);
+    //console.log(program);
+    const snap = new Snap(program.entryFile, program);
+    await snap.exec();
 })();
