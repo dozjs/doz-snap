@@ -7,6 +7,10 @@
     "doz-prerender": "./src/cli.js"
   },
   "scripts": {
+    "version:major": "npm version major",
+    "version:minor": "npm version minor",
+    "version:patch": "npm version patch",
+    "postversion": "git push --follow-tags && npm publish",
     "test": "mocha test",
     "test-ssr-serve": "parcel serve test/SSR/client/index.html --no-cache --out-dir test/SSR/public/",
     "test-ssr-watch": "parcel watch test/SSR/client/index.html --no-cache --out-dir test/SSR/public/ --public-url ./",
