@@ -8,10 +8,21 @@ Pre-rendering for Doz
 ## Installation
 
 ```
-npm install -g doz-snap
+npm install --save-dev doz-snap
 ```
 
 ## Usage
+
+First all you must adding doz-snap plugin to your app
+
+```js
+import snapPlugin from 'doz-snap/plugin'
+
+Doz.use(snapPlugin);
+```
+
+Then after build you can run this
+
 ```
 $ doz-snap -f ./public/index.html
 ```
