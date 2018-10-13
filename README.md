@@ -1,2 +1,2 @@
 # doz-snap
-Pre-ndering for Doz
+Pre-rendering for Doz
