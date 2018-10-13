@@ -186,8 +186,14 @@ class Snap {
     }
 
     setNewSrc(basename) {
-        const newPath = `${this.opt.publicURL}${basename}`;
-        return normalizeUrl(newPath);
+        let newPath = `${this.opt.publicURL}${basename}`;
+
+        if (/^https?:/.test(newPath))
+            newPath = normalizeUrl(newPath);
+        else
+            newPath = newPath.replace('//','/');
+
+        return newPath;
     }
 
     getLinks() {
