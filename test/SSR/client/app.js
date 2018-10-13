@@ -2,7 +2,7 @@ import Doz from 'doz'
 import 'doz-router'
 import imagePhoneUrl from './iphone.png'
 import './style.css'
-import DozPreRenderPlugin from '../../../src/plugin'
+import DozPreRenderPlugin from '../../../plugin'
 import meta from 'metaset'
 
 Doz.use(DozPreRenderPlugin);

@@ -1,2 +1,2 @@
 module.exports = require('./src/Snap');
-module.exports.plugin = require('./src/plugin');
+module.exports.plugin = require('./plugin');

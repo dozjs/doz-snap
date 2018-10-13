@@ -9,7 +9,7 @@ program
     .option('-f, --entry-file <fileName>', 'Entry file')
     .option('-b, --bundle-id [value]', 'Bundle script id')
     .option('-D, --doc-type-string [value]', 'Document type')
-    .option('-d, --delay-render [value]', 'Delay render')
+    .option('-d, --delay-render <n>', 'Delay render')
     .option('-s, --link-selector [value]', 'Link selector')
     .option('-i, --index-file [value]', 'Index file')
     .option('-o, --output-dir [value]', 'Output directory')
@@ -20,7 +20,6 @@ program
     .parse(process.argv);
 
 (async ()=>{
-    //console.log(program);
     const snap = new Snap(program.entryFile, program);
     await snap.exec();
 })();
