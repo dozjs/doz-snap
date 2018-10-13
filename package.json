@@ -4,7 +4,7 @@
   "description": "Pre-rendering for Doz",
   "main": "index.js",
   "bin": {
-    "doz-prerender": "./src/cli.js"
+    "doz-snap": "./src/cli.js"
   },
   "scripts": {
     "version:major": "npm version major",
