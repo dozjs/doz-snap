@@ -8,6 +8,7 @@ const normalizeUrl = require('normalize-url');
 const slash = require('super-trailing-slash');
 const del = require('delete');
 const PUBLIC_URL = '__DOZ_PRERENDER_PUBLIC_URL__';
+const REGEX_URL_CSS = /url\(["']?(.+?)["']?\)/gm;
 
 function isLocalUrl(href) {
     if (/^\/\//.test(href))
