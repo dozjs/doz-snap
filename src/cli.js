@@ -20,6 +20,10 @@ program
     .parse(process.argv);
 
 (async ()=>{
-    const snap = new Snap(program.entryFile, program);
-    await snap.exec();
+    try {
+        const snap = new Snap(program.entryFile, program);
+        await snap.exec();
+    } catch (e) {
+        throw e;
+    }
 })();

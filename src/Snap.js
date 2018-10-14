@@ -10,6 +10,9 @@ const del = require('delete');
 const PUBLIC_URL = '__DOZ_PRERENDER_PUBLIC_URL__';
 
 function isLocalUrl(href) {
+    if (/^\/\//.test(href))
+        return false;
+
     const hrefPart = Url.parse(href);
     return hrefPart.protocol == null
 }
@@ -164,34 +167,39 @@ class Snap {
             await this.processRes(el, 'href', destination);
         } else if (el.src && isLocalUrl(el.src)) {
             await this.processRes(el, 'src', destination);
-        } else if (el.srcset && isLocalUrl(el.srcset)) {
+        } else if (el.srcset && el.srcset !== 'null' && isLocalUrl(el.srcset)) {
             await this.processRes(el, 'srcset', destination);
         }
     }
 
     async processRes(el, attr, destination) {
-        // Copy to relative folder
-        const toFolder = Path.join(destination, Path.basename(el[attr]));
-        if (!this.processedRes.includes(toFolder)) {
-            await this.copyRes(el[attr], toFolder);
-            this.processedRes.push(toFolder);
-        }
+        try {
 
-        // Copy to root
-        const toRoot = Path.basename(el[attr]);
-        if (!this.processedRes.includes(toRoot)) {
-            await this.copyRes(el[attr], toRoot);
-            this.processedRes.push(el[attr]);
+            // Copy to relative folder
+            const toFolder = Path.join(destination, Path.basename(el[attr]));
+            if (!this.processedRes.includes(toFolder)) {
+                await this.copyRes(el[attr], toFolder);
+                this.processedRes.push(toFolder);
+            }
+
+            // Copy to root
+            const toRoot = Path.basename(el[attr]);
+            if (!this.processedRes.includes(toRoot)) {
+                await this.copyRes(el[attr], toRoot);
+                this.processedRes.push(el[attr]);
+            }
+        } catch (e) {
+
         }
     }
 
-    setNewSrc(basename) {
+    setNewSrc(basename = '') {
         let newPath = `${this.opt.publicURL}${basename}`;
 
         if (/^https?:/.test(newPath))
             newPath = normalizeUrl(newPath);
         else
-            newPath = newPath.replace('//','/');
+            newPath = newPath.replace('//', '/');
 
         return newPath;
     }

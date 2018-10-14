@@ -12,7 +12,7 @@ Doz.use(DozPreRenderPlugin);
 Doz.component('home-page', {
     template() {
         return `
-                <div>I'm home page</div>
+                <div><h1>I'm home page</h1> <img src="//avatars0.githubusercontent.com/u/12598754?s=800"/></div>
             `
     },
     onCreate() {
@@ -91,7 +91,7 @@ Doz.component('user-details-page', {
             `
     },
     onCreate() {
-        this.props.id = this.getComponentById('router').$_param['id'];
+        this.props.id = this.getComponentById('router')._param['id'];
         console.log(this.tag, 'created');
         meta.setTitle('User details page');
     },
@@ -107,7 +107,7 @@ Doz.component('search-page', {
             `
     },
     onCreate() {
-        this.props.query = this.getComponentById('router').$_query['t'];
+        this.props.query = this.getComponentById('router')._query['t'];
         console.log(this.tag, 'created');
         meta.setTitle('Search page');
     },
@@ -133,7 +133,7 @@ Doz.component('user-page', {
 
 Doz.component('section-page', {
     template() {
-        let id = this.getComponentById('router').$_param['id'];
+        let id = this.getComponentById('router')._param['id'];
         return `
                 <div>I'm section page index ${id}</div>
             `

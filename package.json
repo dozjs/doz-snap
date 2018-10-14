@@ -12,9 +12,9 @@
     "version:patch": "npm version patch",
     "postversion": "git push --follow-tags && npm publish",
     "test": "mocha test",
-    "test-ssr-serve": "parcel serve test/SSR/client/index.html --no-cache --out-dir test/SSR/public/",
-    "test-ssr-watch": "parcel watch test/SSR/client/index.html --no-cache --out-dir test/SSR/public/ --public-url ./",
-    "test-ssr-build": "parcel build test/SSR/client/index.html --no-cache --out-dir test/SSR/public/ --public-url ./"
+    "test-ssr-serve": "parcel serve test/SSR/client/index.html --no-cache --out-dir test/SSR/dist/",
+    "test-ssr-watch": "parcel watch test/SSR/client/index.html --no-cache --out-dir test/SSR/dist/",
+    "test-ssr-build": "parcel build test/SSR/client/index.html --no-cache --out-dir test/SSR/dist/"
   },
   "repository": {
     "type": "git",
@@ -48,6 +48,7 @@
     "doz-router": "^1.4.1",
     "metaset": "^1.0.1",
     "mocha": "^5.2.0",
-    "parcel-bundler": "^1.9.4"
+    "parcel-bundler": "^1.9.4",
+    "parcel-plugin-clean-dist": "0.0.6"
   }
 }
