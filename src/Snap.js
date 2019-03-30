@@ -103,6 +103,8 @@ class Snap {
         // Render
         let content = await this.ssr.render(route);
 
+        console.log('content', content);
+
         // Retrieve all links
         const links = this.getLinks();
 
@@ -114,6 +116,8 @@ class Snap {
             link = links[i];
             link.removeAttribute(this.opt.routerAttribute);
             href = link.href;
+
+            console.log('isLocalUrl', href, isLocalUrl(href));
 
             // Added only if is relative url
             if (isLocalUrl(href) && !this.processedRoutes.includes(href)) {
