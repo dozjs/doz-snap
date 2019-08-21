@@ -211,5 +211,9 @@ new Doz({
                     <section-page route="/section/:id" preserve></section-page>
                 </doz-router>
             </div>
-        `
+        `,
+    onMount() {
+        if (window.SSR)
+            window.SSR.ready();
+    }
 });

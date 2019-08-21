@@ -101,12 +101,17 @@ class Snap {
         console.log('[processing]', route);
 
         // Render
-        let content = await this.ssr.render(route);
+        let [content] = await this.ssr.render(route, {
+            //baseUrl: '/'
+        });
 
-        console.log('content', content);
+        //let content = await this.ssr.render(route);
+        //console.log('content', content);
 
         // Retrieve all links
-        const links = this.getLinks();
+        let links = this.getLinks(content);
+
+        //console.log('LINKS', links);
 
         let link;
         let href;
@@ -115,9 +120,9 @@ class Snap {
         for (let i = 0; i < links.length; i++) {
             link = links[i];
             link.removeAttribute(this.opt.routerAttribute);
-            href = link.href;
+            href = link.href.replace(/^http:\/\/localhost/, '');
 
-            console.log('isLocalUrl', href, isLocalUrl(href));
+            //console.log('isLocalUrl', href, isLocalUrl(href));
 
             // Added only if is relative url
             if (isLocalUrl(href) && !this.processedRoutes.includes(href)) {
@@ -209,8 +214,11 @@ class Snap {
         return newPath;
     }
 
-    getLinks() {
-        return document.querySelectorAll(this.opt.linkSelector);
+    getLinks(content) {
+        //console.log(this.ssr.docRef.innerHTML)
+        const localDom = new JSDOM(content);
+        const _document = localDom.window.document;
+        return _document.querySelectorAll(this.opt.linkSelector);
     }
 
 }
