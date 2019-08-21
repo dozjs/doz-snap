@@ -37,7 +37,7 @@ class Snap {
 
         this.entryDir = Path.parse(entryFile).dir + '/';
 
-        this.opt.regexBaseUrl = new RegExp('^' + this.opt.publicURL.replace(/\//g, '\/'));
+        this.opt.regexBaseUrl = new RegExp('^' + this.opt.publicURL.replace(/\//g, '/'));
 
         this.opt.outputDir = slash.add(this.opt.outputDir);
         this.opt.publicURL = slash.add(this.opt.publicURL);
@@ -186,22 +186,28 @@ class Snap {
 
     async processRes(el, attr, destination) {
         try {
-
+            /*
             // Copy to relative folder
-            const toFolder = Path.join(destination, Path.basename(el[attr]));
-            if (!this.processedRes.includes(toFolder)) {
+            const toFolder = Path.join(destination, Path.basename(eattr]));
+
+            /*if (!this.processedRes.includes(toFolder)) {
+                //el[attr] = el[attr].replace(/^\//, '');
+                console.warn(el[attr], toFolder);
                 await this.copyRes(el[attr], toFolder);
                 this.processedRes.push(toFolder);
             }
+            */
 
             // Copy to root
             const toRoot = Path.basename(el[attr]);
             if (!this.processedRes.includes(toRoot)) {
+                //console.warn('#2 not exists', toRoot, JSON.stringify(this.processedRes))
                 await this.copyRes(el[attr], toRoot);
-                this.processedRes.push(el[attr]);
+                //this.processedRes.push(el[attr]);
+                this.processedRes.push(toRoot);
             }
         } catch (e) {
-
+            console.error(e)
         }
     }
 
