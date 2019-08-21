@@ -1,7 +1,7 @@
 const Snap = require('../../');
 
 const snap = new Snap('../SSR/dist/index.html', {
-    publicURL: 'http://localhost:63342/doz-snap/test/SSR/snap/',
+    publicURL: 'http://localhost',
     clearDir: true
 });
 

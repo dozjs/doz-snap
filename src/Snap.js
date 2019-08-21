@@ -29,13 +29,15 @@ class Snap {
             linkSelector: 'a[href]',
             indexFile: 'index.html',
             outputDir: 'snap',
-            publicURL: '/',
+            publicURL: 'http://localhost',
             routerAttribute: 'data-router-link',
             clearDir: true,
             verbose: true
         }, opt);
 
         this.entryDir = Path.parse(entryFile).dir + '/';
+
+        this.opt.regexBaseUrl = new RegExp('^' + this.opt.publicURL.replace(/\//g, '\/'));
 
         this.opt.outputDir = slash.add(this.opt.outputDir);
         this.opt.publicURL = slash.add(this.opt.publicURL);
@@ -102,7 +104,7 @@ class Snap {
 
         // Render
         let [content] = await this.ssr.render(route, {
-            //baseUrl: '/'
+            baseUrl: this.opt.publicURL
         });
 
         //let content = await this.ssr.render(route);
@@ -120,7 +122,7 @@ class Snap {
         for (let i = 0; i < links.length; i++) {
             link = links[i];
             link.removeAttribute(this.opt.routerAttribute);
-            href = link.href.replace(/^http:\/\/localhost/, '');
+            href = link.href.replace(this.opt.regexBaseUrl, '');
 
             //console.log('isLocalUrl', href, isLocalUrl(href));
 

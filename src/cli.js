@@ -14,6 +14,7 @@ program
     .option('-i, --index-file [value]', 'Index file')
     .option('-o, --output-dir [value]', 'Output directory')
     .option('-p, --public-url [value]', 'Public url')
+    .option('-B, --base-url [value]', 'Base url')
     .option('-R, --router-attribute [value]', 'Router attribute')
     .option('--no-clear-dir', 'Disable clear directory before build')
     .option('--no-verbose', 'Disable verbose log')
