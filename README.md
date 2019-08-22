@@ -13,16 +13,6 @@ npm install --save-dev doz-snap
 
 ## Usage
 
-First all you must adding doz-snap plugin to your app
-
-```js
-import snapPlugin from 'doz-snap/plugin'
-
-Doz.use(snapPlugin);
-```
-
-Then after build you can run this
-
 ```
 $ doz-snap -f ./public/index.html
 ```
@@ -45,6 +35,9 @@ $ doz-snap --help
     --no-clear-dir              Disable clear directory before build
     --no-verbose                Disable verbose log
 ```
+
+## Important
+Once your static app has been created, however, you need a web server such as Apache, Nginx etc.
 
 ## Changelog
 You can view the changelog <a target="_blank" href="https://github.com/dozjs/doz-snap/blob/master/CHANGELOG.md">here</a>

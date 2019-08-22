@@ -3,10 +3,10 @@ import 'doz-router'
 import imagePhoneUrl from './iphone.png'
 import './style.css'
 import 'font-awesome/css/font-awesome.min.css'
-import DozPreRenderPlugin from '../../../plugin'
+//import DozPreRenderPlugin from '../../../plugin'
 import meta from 'metaset'
 
-Doz.use(DozPreRenderPlugin);
+//Doz.use(DozPreRenderPlugin);
 
 //Doz.component('doz-router', router);
 

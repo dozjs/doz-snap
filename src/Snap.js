@@ -7,8 +7,9 @@ const {JSDOM} = jsdom;
 const normalizeUrl = require('normalize-url');
 const slash = require('super-trailing-slash');
 const del = require('delete');
-const PUBLIC_URL = '__DOZ_PRERENDER_PUBLIC_URL__';
-const REGEX_URL_CSS = /url\(["']?(.+?)["']?\)/gm;
+const colors = require('colors/safe');
+//const PUBLIC_URL = '__DOZ_PRERENDER_PUBLIC_URL__';
+//const REGEX_URL_CSS = /url\(["']?(.+?)["']?\)/gm;
 
 function isLocalUrl(href) {
     if (/^\/\//.test(href))
@@ -69,25 +70,28 @@ class Snap {
 
         await fs.outputFile(finalPath, content);
 
-        console.log('[done]', route);
+        console.log(colors.green('[done]'), route);
     }
 
     async exec(route = '/') {
-        console.log('[START] pre-rendering...');
+        console.log(colors.cyan('[START] pre-rendering...'));
         if (this.opt.clearDir) {
             console.log('[cleanup...]');
             await del.promise(this.opt.outputDir, {force: true});
         }
         await this.run(route);
-        console.log('[END] pre-rendering');
+        console.log(colors.cyan('[END] pre-rendering'));
 
         if (this.opt.verbose) {
             console.log('[Verbose]');
             console.log('Routes processed:');
-            console.log(this.processedRoutes);
+            console.log(colors.gray(this.processedRoutes));
             console.log('Resources copied:');
-            console.log(this.processedRes);
+            console.log(colors.gray(this.processedRes));
         }
+
+        console.log(colors.green(`Your static version is created in "${this.opt.outputDir}" folder`));
+        console.log(colors.cyan('Remember, however, that for it to work you need a web server such as Apache, Nginx etc.'));
 
         setImmediate(() => {
             process.exit(0);
@@ -100,7 +104,7 @@ class Snap {
 
         this.processedRoutes.push(route);
 
-        console.log('[processing]', route);
+        console.log(colors.yellow('[processing]'), route);
 
         // Render
         let [content] = await this.ssr.render(route, {
@@ -210,6 +214,7 @@ class Snap {
         }
     }
 
+    /*
     setNewSrc(basename = '') {
         let newPath = `${this.opt.publicURL}${basename}`;
 
@@ -220,6 +225,7 @@ class Snap {
 
         return newPath;
     }
+     */
 
     getLinks(content) {
         //console.log(this.ssr.docRef.innerHTML)
