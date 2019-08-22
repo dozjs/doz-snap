@@ -113,14 +113,13 @@ class Snap {
         // Retrieve all links
         let links = this.getLinks(content);
 
-        //console.log('LINKS', links);
-
         let link;
         let href;
 
         // Iterate links
         for (let i = 0; i < links.length; i++) {
             link = links[i];
+
             link.removeAttribute(this.opt.routerAttribute);
             href = link.href.replace(this.opt.regexBaseUrl, '');
 
@@ -150,7 +149,7 @@ class Snap {
 
         if (bundleEl) {
             const js = _document.createElement('script');
-            js.innerHTML = `window.${PUBLIC_URL} = '${this.opt.publicURL}';`;
+            //js.innerHTML = `window.${PUBLIC_URL} = '${this.opt.publicURL}';`;
             bundleEl.parentNode.insertBefore(js, bundleEl);
         }
 
@@ -173,8 +172,8 @@ class Snap {
             ? Path.join(destinationPart.dir, destinationPart.base)
             : destinationPart.dir;
 
-        if (el.nodeName === 'A' && el.href && isLocalUrl(el.href)) {
-            el.href = this.setNewSrc(el.href);
+        if (el.nodeName === 'A' && el.href /*&& isLocalUrl(el.href)*/) {
+            el.href = el.href.replace(this.opt.regexBaseUrl, '');
         } else if (el.nodeName !== 'A' && el.href && isLocalUrl(el.href)) {
             await this.processRes(el, 'href', destination);
         } else if (el.src && isLocalUrl(el.src)) {

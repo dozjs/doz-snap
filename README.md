@@ -40,7 +40,7 @@ $ doz-snap --help
     -s,     --link-selector     Link selector       'a[href]'
     -i,     --index-file        Index file          'index.html'
     -o,     --output-dir        Output directory'   'snap'
-    -p,     --public-url        Public url          '/'
+    -p,     --public-url        Public url          'http://localhost'
     -R,     --router-attribute  Router attribute    'data-router-link'
     --no-clear-dir              Disable clear directory before build
     --no-verbose                Disable verbose log

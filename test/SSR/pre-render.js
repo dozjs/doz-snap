@@ -1,7 +1,7 @@
 const Snap = require('../../');
 
 const snap = new Snap('../SSR/dist/index.html', {
-    publicURL: 'http://localhost',
+    //publicURL: 'http://localhost',
     clearDir: true
 });
 
