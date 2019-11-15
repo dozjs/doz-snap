@@ -11,7 +11,7 @@ function fixUrl(obj) {
     }
 
     if (obj.children) {
-        for(var i = 0; i < obj.children.length; i++) {
+        for (var i = 0; i < obj.children.length; i++) {
             var o = obj.children[i];
             if (typeof o === 'object')
                 fixUrl(o);
@@ -23,7 +23,7 @@ module.exports = function (Doz, app, options) {
 
     if (!window[PUBLIC_URL]) return;
 
-    app.on('draw', (next) => {
+    app.on('draw', function (next) {
         fixUrl(next);
     });
 };
