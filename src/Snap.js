@@ -32,6 +32,7 @@ class Snap {
             outputDir: 'snap',
             publicURL: 'http://localhost',
             routerAttribute: 'data-router-link',
+            cname: '',
             clearDir: true,
             verbose: true
         }, opt);
@@ -88,6 +89,11 @@ class Snap {
             console.log(colors.gray(this.processedRoutes));
             console.log('Resources copied:');
             console.log(colors.gray(this.processedRes));
+        }
+
+        if (this.opt.cname) {
+            await this.writeCNAME();
+            console.log('CNAME file created!');
         }
 
         console.log(colors.green(`Your static version is created in "${this.opt.outputDir}" folder`));
@@ -234,6 +240,9 @@ class Snap {
         return _document.querySelectorAll(this.opt.linkSelector);
     }
 
+    async writeCNAME() {
+        return fs.outputFile(`${this.opt.outputDir}/CNAME`, this.opt.cname);
+    }
 }
 
 module.exports = Snap;

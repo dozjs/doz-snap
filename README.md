@@ -34,6 +34,7 @@ $ doz-snap --help
     -R,     --router-attribute  Router attribute    'data-router-link'
     --no-clear-dir              Disable clear directory before build
     --no-verbose                Disable verbose log
+    --cname                     A domain in a file named CNAME
 ```
 
 ## Important
