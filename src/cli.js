@@ -18,7 +18,7 @@ program
     .option('-R, --router-attribute [value]', 'Router attribute')
     .option('--no-clear-dir', 'Disable clear directory before build')
     .option('--no-verbose', 'Disable verbose log')
-    .option('--cname', 'A domain in a file named CNAME')
+    .option('--cname [value]', 'A domain in a file named CNAME')
     .parse(process.argv);
 
 (async ()=>{
